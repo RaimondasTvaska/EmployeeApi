@@ -27,11 +27,11 @@ namespace EmployeeApi
                 d.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<EmployeeRepository>();
-            //services.AddTransient<PointListRepository>();
+            services.AddTransient<CompanyRepository>();
 
 
             services.AddTransient<EmployeeService>();
-            //services.AddTransient<PointListService>();
+            services.AddTransient<CompanyService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
