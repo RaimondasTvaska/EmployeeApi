@@ -37,3 +37,7 @@ https://code-maze.com/automapper-net-core/
 3. Add Middleware which handles errors :
 https://code-maze.com/global-error-handling-aspnetcore/
 4. Use Enum for Sex (Enums in c#)
+5. Validate that both FirstName and LastName should not be empty/ Empty string.
+Each should be longer than 4 chars.
+Please study and use FluentValidator nuget package for this.
+https://fluentvalidation.net/

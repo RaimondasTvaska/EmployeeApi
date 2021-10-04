@@ -22,13 +22,27 @@ namespace EmployeeApi.Repositories
 
         public async Task<Company> GetByIdAsync(int id)
         {
-            return await _dataContext.Companies.FirstOrDefaultAsync(e => e.Id == id);
+            return await _dataContext.Companies.Include(p => p.Employees).FirstOrDefaultAsync(e => e.Id == id);
         }
         public async Task<List<Company>> GetAllCompaniesAsync()
         {
             return await _dataContext.Companies.ToListAsync();
         }
 
+        public async Task<Company> GetAllEmployeesAsync(int id)
+        {
+            return await _dataContext.Companies.Include(p => p.Employees).FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public async Task<Company> GetCountEmployeesAsync(int id)
+        {
+            return await _dataContext.Companies.Include(p => p.Employees).FirstOrDefaultAsync(e => e.Id == id);
+        }
+        public async Task UpdateCompanyAsync(Company company)
+        {
+            _dataContext.Update(company);
+            await _dataContext.SaveChangesAsync();
+        }
         public async Task DeleteAsync(Company company)
         {
             _dataContext.Remove(company);

@@ -1,11 +1,10 @@
-﻿namespace EmployeeApi.Entyties
+﻿namespace EmployeeApi.Dtos
 {
-    public class Employee
+    public class CreateEmployeeDto
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public GenderType GenderType { get; set; }
+        public string Gender { get; set; }
         public int? CompanyListId { get; set; }
     }
 }

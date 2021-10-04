@@ -28,6 +28,11 @@ namespace EmployeeApi.Repositories
         {
             return await _dataContext.Employees.ToListAsync();
         }
+        public async Task UpdateEmployee(Employee employee)
+        {
+            _dataContext.Update(employee);
+            await _dataContext.SaveChangesAsync();
+        }
 
         public async Task DeleteAsync(Employee employee)
         {

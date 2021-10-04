@@ -26,6 +26,8 @@ namespace EmployeeApi
             services.AddDbContext<DataContext>(d =>
                 d.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddTransient<EmployeeRepository>();
             services.AddTransient<CompanyRepository>();
 

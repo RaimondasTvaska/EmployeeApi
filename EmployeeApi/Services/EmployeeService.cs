@@ -1,4 +1,5 @@
-﻿using EmployeeApi.Entyties;
+﻿using EmployeeApi.Dtos;
+using EmployeeApi.Entyties;
 using EmployeeApi.Repositories;
 using System;
 using System.Collections.Generic;
@@ -25,18 +26,31 @@ namespace EmployeeApi.Services
         {
             return await _employeeRepository.GetByIdAsync(id);
         }
-        public async Task AddAsync(Employee employee)
+        public async Task AddAsync(CreateEmployeeDto createEmployeeDto)
         {
-            if (employee.CompanyListId.HasValue)
+            var entity = new Employee()
             {
-                var company = await _companyRepository.GetByIdAsync(employee.CompanyListId.Value);
+                FirstName = createEmployeeDto.FirstName,
+                LastName = createEmployeeDto.LastName,
+                GenderType = Enum.Parse<GenderType>(createEmployeeDto.Gender),
+                CompanyListId = createEmployeeDto.CompanyListId
+            };
+            if (createEmployeeDto.CompanyListId.HasValue)
+            {
+                var company = await _companyRepository.GetByIdAsync(createEmployeeDto.CompanyListId.Value);
                 if (company == null)
                 {
                     throw new ArgumentException("Freelancer");
                 }
             }
+            await _employeeRepository.CreateAsync(entity);
 
-            await _employeeRepository.CreateAsync(employee);
+        }
+
+
+        public async Task UpdateEmployeeAsync(Employee employee)
+        {
+            await _employeeRepository.UpdateEmployee(employee);
         }
 
         public async Task DeleteAsync(int id)

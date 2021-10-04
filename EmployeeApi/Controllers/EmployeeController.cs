@@ -1,6 +1,8 @@
-﻿using EmployeeApi.Entyties;
+﻿using EmployeeApi.Dtos;
+using EmployeeApi.Entyties;
 using EmployeeApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EmployeeApi.Controllers
@@ -16,12 +18,12 @@ namespace EmployeeApi.Controllers
             _employeeService = employeeService;
         }
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult<List<Employee>>> GetAll()
         {
             return Ok(await _employeeService.GetAllAsync());
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetById(int id)
+        public async Task<ActionResult<List<Employee>>> GetById(int id)
         {
             var employee = await _employeeService.GetByIdAsync(id);
             if (employee == null)
@@ -31,9 +33,15 @@ namespace EmployeeApi.Controllers
             return Ok(employee);
         }
         [HttpPost]
-        public async Task<IActionResult> Add(Employee employee)
+        public async Task<IActionResult> Add(CreateEmployeeDto employee)
         {
             await _employeeService.AddAsync(employee);
+            return NoContent();
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateEmployee(Employee employee)
+        {
+            await _employeeService.UpdateEmployeeAsync(employee);
             return NoContent();
         }
         [HttpDelete("{id}")]
