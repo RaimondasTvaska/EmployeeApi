@@ -35,11 +35,10 @@ namespace EmployeeApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CreateEmployeeDto employee)
         {
-            await _employeeService.AddAsync(employee);
-            return NoContent();
+            return Ok(await _employeeService.AddAsync(employee));
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateEmployee(Employee employee)
+        public async Task<IActionResult> UpdateEmployee(EmployeeDto employee)
         {
             await _employeeService.UpdateEmployeeAsync(employee);
             return NoContent();

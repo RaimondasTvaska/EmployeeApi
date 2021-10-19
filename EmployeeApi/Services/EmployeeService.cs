@@ -3,6 +3,7 @@ using EmployeeApi.Entyties;
 using EmployeeApi.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmployeeApi.Services
@@ -18,21 +19,33 @@ namespace EmployeeApi.Services
             _companyRepository = companyRepository;
         }
 
-        public async Task<List<Employee>> GetAllAsync()
+        public async Task<List<EmployeeDto>> GetAllAsync()
         {
-            return await _employeeRepository.GetAllEmployeesAsync();
+            var employeeEntities = await _employeeRepository.GetAllEmployeesAsync();
+            var dtos = employeeEntities.Select(e => new EmployeeDto()
+            {
+                Id = e.Id,
+                FirstName = e.FirstName,
+                LastName = e.LastName,
+                CompanyListId = e.CompanyListId,
+                GenderType = e.GenderType.ToString()
+
+            });
+
+            return dtos.ToList();
         }
         public async Task<Employee> GetByIdAsync(int id)
         {
             return await _employeeRepository.GetByIdAsync(id);
         }
-        public async Task AddAsync(CreateEmployeeDto createEmployeeDto)
+        public async Task<int> AddAsync(CreateEmployeeDto createEmployeeDto)
         {
+            var genderType = Enum.Parse<GenderType>(createEmployeeDto.Gender ?? "Unspecified");
             var entity = new Employee()
             {
                 FirstName = createEmployeeDto.FirstName,
                 LastName = createEmployeeDto.LastName,
-                GenderType = Enum.Parse<GenderType>(createEmployeeDto.Gender),
+                GenderType = genderType,
                 CompanyListId = createEmployeeDto.CompanyListId
             };
             if (createEmployeeDto.CompanyListId.HasValue)
@@ -44,13 +57,24 @@ namespace EmployeeApi.Services
                 }
             }
             await _employeeRepository.CreateAsync(entity);
+            return entity.Id;
 
         }
 
 
-        public async Task UpdateEmployeeAsync(Employee employee)
+        public async Task UpdateEmployeeAsync(EmployeeDto employee)
         {
-            await _employeeRepository.UpdateEmployee(employee);
+            var genderType = Enum.Parse<GenderType>(employee.GenderType ?? "Unspecified");
+            var entity = new Employee()
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                GenderType = genderType,
+                CompanyListId = employee.CompanyListId
+            };
+
+            await _employeeRepository.UpdateEmployee(entity);
         }
 
         public async Task DeleteAsync(int id)

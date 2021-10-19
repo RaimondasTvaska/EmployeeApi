@@ -1,0 +1,11 @@
+Create front-end for Employee Web Api with Angular
+
+Requirements:
+1. On front-end application load, the app would get employees (firstName, lastName) from .net back-end
+2. Be able to add new employee through front-end
+
+Additional requirements:
+1 Install Bootstrap to angular and use it to style the form, table
+2 Add Delete functionality
+3. Add the button which allows to update employee instead of creating.
+Use the same form to edit the employee with PUT.
